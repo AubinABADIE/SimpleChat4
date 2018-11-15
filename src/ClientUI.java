@@ -34,7 +34,8 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 /**
- * UI class of SimpleChat4
+ * UI class of SimpleChat4. Its implements the chat interface in order to activate
+ * display() method.
  * 
  * @author Marie Salelles
  * @author Aubin ABADIE
@@ -55,8 +56,9 @@ public class ClientUI extends Application implements ChatIF {
 	private Label nameLabel;
 	private TextArea messages;
 	
-	/* Instance variables */
-	
+	/**
+	 * The instance of the client that created this ConsoleChat.
+	 */
 	private ChatClient client;
 
 	/* Getters and Setters */
@@ -116,7 +118,7 @@ public class ClientUI extends Application implements ChatIF {
     }
     
     /**
-     * 
+     * design pane : placement of components
      * @return
      */
     private GridPane createRegistrationFormPane() {
@@ -151,7 +153,7 @@ public class ClientUI extends Application implements ChatIF {
     }
     
     /**
-     * 
+     * design the primary scene with the connection interface and handle the events
      * @param gridPane
      */
     private void addUIControls(GridPane gridPane) {
@@ -251,7 +253,7 @@ public class ClientUI extends Application implements ChatIF {
     }
     
     /**
-     * 
+     * create the pane for the simpleChat
      * @return
      */
     private StackPane createChatPane() {
@@ -262,7 +264,7 @@ public class ClientUI extends Application implements ChatIF {
     }
     
     /**
-     * 
+     * design the second scene with the discussion interface and handle the events
      * @param root
      */
     @SuppressWarnings("static-access")
@@ -393,7 +395,7 @@ public class ClientUI extends Application implements ChatIF {
     }
     
     /**
-     * 
+     * Show alert to user 
      * @param alertType
      * @param owner
      * @param title
@@ -409,6 +411,10 @@ public class ClientUI extends Application implements ChatIF {
         alert.show();
     }
     
+    /**
+     * Create chatClient  to connect with the server
+     * 
+     */
     private void createConnection() {
     	try {
 			client = new ChatClient(name, host, port, this);
@@ -418,8 +424,10 @@ public class ClientUI extends Application implements ChatIF {
     }
 
     /**
-     * 
-     * @param message
+     * This method overrides the method in the ChatIF interface.  It
+     * displays a message onto the screen.
+     *
+     * @param message The string to be displayed.
      */
 	@Override
 	public void display(String message) {
@@ -454,7 +462,7 @@ public class ClientUI extends Application implements ChatIF {
 	}
 	
 	/**
-	 * 
+	 * Launch the chat interface 
 	 * @param args
 	 */
 	public static void main(String[] args) {
