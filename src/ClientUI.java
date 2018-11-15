@@ -468,4 +468,4 @@ public class ClientUI extends Application implements ChatIF {
 	public static void main(String[] args) {
         Application.launch(ClientUI.class, args);
     }
-}
+} 
