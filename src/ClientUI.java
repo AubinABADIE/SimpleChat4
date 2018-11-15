@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -32,23 +33,34 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+/**
+ * UI class of SimpleChat4
+ * 
+ * @author Marie Salelles
+ * @author Aubin ABADIE
+ *
+ */
 public class ClientUI extends Application implements ChatIF {
 	
-	// UI Variables
+	/* UI Variables */
+	
 	private Stage primaryStage;
 	private Scene connectionScene;
 	private Scene principaleScene;
 	
-	private String name= "test";
+	private String name;
 	private String host;
 	private int port;
 
+	private Label nameLabel;
 	private TextArea messages;
 	
-	// Controls Variables 
+	/* Instance variables */
+	
 	private ChatClient client;
 
-	// Getters and Setters
+	/* Getters and Setters */
+	
     public String getName() {
 		return name;
 	}
@@ -70,10 +82,24 @@ public class ClientUI extends Application implements ChatIF {
 		this.port = port;
 	}
     
+	/**
+	 * Create the window with the two scene and set the first scene as main.
+	 * 
+	 * @param primaryStage Frame window
+	 * @throws Exception
+	 */
     @Override
     public void start(Stage primaryStage) throws Exception {
     	this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Connection");
+        
+        // Scene 2
+        // Create the registration form grid pane
+        StackPane root = createChatPane();
+        // Add UI controls to the registration form grid pane
+        addUIControls2(root);
+        // Create a scene with registration form grid pane as the root node
+        principaleScene = new Scene(root, 800, 500);
         
         // Scene 1
         // Create the registration form grid pane
@@ -83,20 +109,16 @@ public class ClientUI extends Application implements ChatIF {
         // Create a scene with registration form grid pane as the root node
         this.connectionScene = new Scene(gridPane, 800, 500);
         
-        // Scene 2
-        // Create the registration form grid pane
-        StackPane root = createChatPane();
-        // Add UI controls to the registration form grid pane
-        addUIControls2(root);
-        // Create a scene with registration form grid pane as the root node
-        this.principaleScene = new Scene(root, 800, 500);
-        
         // Set the scene in primary stage	
         this.primaryStage.setScene(connectionScene);
         // Set the stage visible
         this.primaryStage.show();
     }
     
+    /**
+     * 
+     * @return
+     */
     private GridPane createRegistrationFormPane() {
         // Instantiate a new Grid Pane
         GridPane gridPane = new GridPane();
@@ -128,6 +150,10 @@ public class ClientUI extends Application implements ChatIF {
         return gridPane;
     }
     
+    /**
+     * 
+     * @param gridPane
+     */
     private void addUIControls(GridPane gridPane) {
         // Add Header
         Label headerLabel = new Label("Connection");
@@ -205,6 +231,11 @@ public class ClientUI extends Application implements ChatIF {
                 	setPort(Integer.parseInt(portField.getText()));
                 	
                 	createConnection();
+                	
+                	/*Label nameL = new Label("Hello " + getName() + "!");
+                	GridPane g = (GridPane) nameLabel.getParent();
+                	g.getChildren().set(1, nameL);
+                	g.getChildren().add(nameL);*/
                     
                 	primaryStage.setScene(principaleScene);
                 	
@@ -219,6 +250,10 @@ public class ClientUI extends Application implements ChatIF {
         });
     }
     
+    /**
+     * 
+     * @return
+     */
     private StackPane createChatPane() {
         // Instantiate a new VBox 
     	StackPane root = new StackPane();
@@ -226,10 +261,15 @@ public class ClientUI extends Application implements ChatIF {
         return root;
     }
     
-    private void addUIControls2(StackPane root) {
+    /**
+     * 
+     * @param root
+     */
+    @SuppressWarnings("static-access")
+	private void addUIControls2(StackPane root) {
     	
     	// Add Name Label
-        Label nameLabel = new Label("Hello " + this.name + "!");
+    	nameLabel = new Label();
         nameLabel.setPrefHeight(40);
         nameLabel.setMaxWidth(Double.MAX_VALUE);
         
@@ -352,6 +392,13 @@ public class ClientUI extends Application implements ChatIF {
 
     }
     
+    /**
+     * 
+     * @param alertType
+     * @param owner
+     * @param title
+     * @param message
+     */
     private void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -365,13 +412,15 @@ public class ClientUI extends Application implements ChatIF {
     private void createConnection() {
     	try {
 			client = new ChatClient(name, host, port, this);
-			System.out.println(name + host + port);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
 
+    /**
+     * 
+     * @param message
+     */
 	@Override
 	public void display(String message) {
 		
@@ -404,6 +453,10 @@ public class ClientUI extends Application implements ChatIF {
         messages.appendText(sender + " <" + sdf.format(cal.getTime()) + ">: \n" + content + "\n\n");
 	}
 	
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
         Application.launch(ClientUI.class, args);
     }
