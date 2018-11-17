@@ -39,7 +39,6 @@ import javafx.stage.Window;
  * 
  * @author Marie Salelles
  * @author Aubin ABADIE
- *
  */
 public class ClientUI extends Application implements ChatIF {
 	
@@ -87,7 +86,7 @@ public class ClientUI extends Application implements ChatIF {
 	/**
 	 * Create the window with the two scene and set the first scene as main.
 	 * 
-	 * @param primaryStage Frame window
+	 * @param primaryStage Frame window.
 	 * @throws Exception
 	 */
     @Override
@@ -118,8 +117,9 @@ public class ClientUI extends Application implements ChatIF {
     }
     
     /**
-     * design pane : placement of components
-     * @return
+     * Create an instance of GridPane and apply format on it.
+     * 
+     * @return GridPane Login pane.
      */
     private GridPane createRegistrationFormPane() {
         // Instantiate a new Grid Pane
@@ -153,8 +153,9 @@ public class ClientUI extends Application implements ChatIF {
     }
     
     /**
-     * design the primary scene with the connection interface and handle the events
-     * @param gridPane
+     * Design the primary scene with the connection interface and handle the events.
+     * 
+     * @param gridPane Login pane.
      */
     private void addUIControls(GridPane gridPane) {
         // Add Header
@@ -233,12 +234,6 @@ public class ClientUI extends Application implements ChatIF {
                 	setPort(Integer.parseInt(portField.getText()));
                 	
                 	createConnection();
-                	
-                	/*Label nameL = new Label("Hello " + getName() + "!");
-                	GridPane g = (GridPane) nameLabel.getParent();
-                	g.getChildren().set(1, nameL);
-                	g.getChildren().add(nameL);*/
-                    
                 	primaryStage.setScene(principaleScene);
                 	
                 } else if(result.get() == ButtonType.CANCEL) {
@@ -253,8 +248,9 @@ public class ClientUI extends Application implements ChatIF {
     }
     
     /**
-     * create the pane for the simpleChat
-     * @return
+     *  Create an instance of StackPane and apply format on it.
+     * 
+     * @return StackPane Chat pane.
      */
     private StackPane createChatPane() {
         // Instantiate a new VBox 
@@ -264,16 +260,17 @@ public class ClientUI extends Application implements ChatIF {
     }
     
     /**
-     * design the second scene with the discussion interface and handle the events
-     * @param root
+     * Design the second scene with the discussion interface and handle the events.
+     * 
+     * @param root Chat pane.
      */
     @SuppressWarnings("static-access")
 	private void addUIControls2(StackPane root) {
     	
     	// Add Name Label
-    	nameLabel = new Label();
-        nameLabel.setPrefHeight(40);
-        nameLabel.setMaxWidth(Double.MAX_VALUE);
+    	this.nameLabel = new Label();
+    	this.nameLabel.setPrefHeight(40);
+    	this.nameLabel.setMaxWidth(Double.MAX_VALUE);
         
         // Add Logoff Button
         Button logoffButton = new Button("Logoff");
@@ -293,11 +290,11 @@ public class ClientUI extends Application implements ChatIF {
         
         // Add Messages Text Area
         this.messages = new TextArea();
-        messages.setEditable(false);
-        messages.setPrefHeight(400);
-        messages.setPrefWidth(300);
-        messages.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        messages.setWrapText(true);
+        this.messages.setEditable(false);
+        this.messages.setPrefHeight(400);
+        this.messages.setPrefWidth(300);
+        this.messages.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        this.messages.setWrapText(true);
         
         // Add Input Text Field
         TextField input = new TextField();
@@ -395,11 +392,12 @@ public class ClientUI extends Application implements ChatIF {
     }
     
     /**
-     * Show alert to user 
-     * @param alertType
-     * @param owner
-     * @param title
-     * @param message
+     * Show personalized alert to user.
+     * 
+     * @param alertType Format of the alert.
+     * @param owner Window on which alert will be displayed.
+     * @param title Title to be displayed.
+     * @param message Message to be displayed.
      */
     private void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
         Alert alert = new Alert(alertType);
@@ -412,8 +410,7 @@ public class ClientUI extends Application implements ChatIF {
     }
     
     /**
-     * Create chatClient  to connect with the server
-     * 
+     * Initialize ChatClient to make connection with the server.
      */
     private void createConnection() {
     	try {
@@ -424,45 +421,29 @@ public class ClientUI extends Application implements ChatIF {
     }
 
     /**
-     * This method overrides the method in the ChatIF interface.  It
-     * displays a message onto the screen.
+     * This method overrides the method in the ChatIF interface. 
+     * It displays a message onto the screen.
      *
      * @param message The string to be displayed.
      */
 	@Override
 	public void display(String message) {
 		
+		// Slip message to get sender and content
 		String [] parts = message.split(">");
 		String sender = parts[0];
 		String content = parts[1];
 		
-		// Add Name Label
-        /*Label nameLabel = new Label(sender);
-        nameLabel.setPrefHeight(40);
-        nameLabel.setMaxWidth(Double.MAX_VALUE);*/
-        
-        // Add Time Label
+		// Get current time
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        /*Label timeLabel = new Label(sdf.format(cal.getTime()));
-        timeLabel.setPrefHeight(40);
-        
-        // Add Content TextArea
-        Label contentText = new Label(content);
-        
-        // Add Header HBox
-    	HBox header = new HBox();
-        // Set a spacing of 5px on each side
-    	header.setSpacing(5);
-    	// create a hbox with a label that grows horizontally
-    	header.setHgrow(contentText, Priority.ALWAYS);
-        header.getChildren().addAll(contentText);*/
         
         messages.appendText(sender + " <" + sdf.format(cal.getTime()) + ">: \n" + content + "\n\n");
 	}
 	
 	/**
-	 * Launch the chat interface 
+	 * Launch the chat interface.
+	 *  
 	 * @param args
 	 */
 	public static void main(String[] args) {
